@@ -1,0 +1,19 @@
+img{
+    max-width: 50%;
+    height: auto;
+    padding-top: 2rem;
+}
+
+button{
+    border-radius: 10px !important;
+}
+@media (max-width: 768px){
+    img{
+        max-width: 75%;
+    }
+}
+@media (min-width: 769px){
+    img{
+        max-width: 50%;
+    }
+}
