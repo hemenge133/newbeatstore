@@ -1,32 +1,39 @@
 import React from 'react';
 import 'react-bootstrap';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { Link, animateScroll as scroll } from "react-scroll";
+//import { Switch, Route, Redirect } from 'react-router-dom';
 import Contact from './components/contact.js'
 import NavBar from './components/NavBar.js'
 import Main from './components/main.js'
 import Store from './components/store.js'
 import './css/App.css'
 import './useWindowDimensions'
-import NotFound from './components/NotFound.js'
 import useWindowDimensions from "./useWindowDimensions";
+import { useInView } from 'react-intersection-observer';
 
 function App() {
     const {height, width} = useWindowDimensions();
-
+    const [mainref, mainView] = useInView({
+        threshold: .7,
+    });
+    const [storeref, storeView] = useInView({
+        threshold: .7,
+    });
+    const [contactref, contactView] = useInView({
+        threshold: .3,
+    });
     return(
         <div>
             <NavBar/>
             <main>
                 <div className='container-fluid'>
-                    <section id="first" style={{height: height, width: width}}>
-                        <Main name="main"/>
+                    <section ref={mainref} id="first" style={{height: height/1.5, width: width}}>
+                        <Main name="main" mainview={mainView}/>
                     </section>
-                    <section id="second" style={{height: height, width: width}}>
-                        <Store name="store"/>
+                    <section ref={storeref} id="second" style={{height: height, width: width}}>
+                        <Store name="store" storeview={storeView}/>
                     </section >
-                    <section id="third" style={{height: height, width: width}}>
-                        <Contact name="contact"/>
+                    <section ref={contactref} id="third" style={{height: height, width: width}}>
+                        <Contact name="contact" contactview={contactView}/>
                     </section>
                 </div>
             </main>

@@ -1,6 +1,8 @@
-input{
-    margin-bottom: 10px ;
+.nav-link{
+    cursor: pointer;
 }
-button{
-    margin-bottom: 10px ;
+.logo{
+    cursor: default;
 }
+*::selection { background: transparent; }
+*::-moz-selection { background: transparent;}

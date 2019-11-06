@@ -1,30 +1,31 @@
 import React from 'react';
-import logo from '../logo.png'
-import { Button } from 'react-bootstrap';
 import '../css/bootstrap.min.css';
 import '../css/store.css'
 import {useSpring, animated} from 'react-spring';
+import useWindowDimensions from "../useWindowDimensions";
 
-const Store = () => {
-    const props = useSpring({
+const Store = (props) => {
+    const { width} = useWindowDimensions();
+    const springProps = useSpring({
         from: {
             opacity: 0,
-            transform: 'translate3d(0,-500px,0)'
+            transform: 'translate3d(1000px,0,0)'
         },
         to: {
-            opacity: 1,
-            transform: 'translate3d(0,0,0)'
-        }
+            opacity: props.storeview ? 1 : 0,
+            transform: props.storeview ? 'translate3d(0,0,0)' : 'translate3d(1000px,0,0)'
+        },
+        delay: 100
     });
     return(
         <>
-            <animated.div id="section-two-wrapper" className='container align-self-center'>
+            <animated.div style={springProps} id="section-two-wrapper" className='container align-self-center'>
                 <div className='row'>
                     <div className="col align-self-center d-flex justify-content-center">
-                        <h1 className="modal-header">Beats</h1>
+                        <h1 className="modal-header">Featured Beats</h1>
                     </div>
                 </div>
-                <div className='row'>
+                <div className='row' style={{maxWidth: width, margin: "0 1rem" }}>
                     <div className="col align-self-center d-flex justify-content-center">
                         <ul className="list-group" id='beats'>
                             <li className="list-group-item">Cras justo odio</li>

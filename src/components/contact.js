@@ -3,22 +3,22 @@ import '../css/bootstrap.min.css'
 import { Form, Button } from 'react-bootstrap'
 import '../css/contact.css'
 import {useSpring, animated} from 'react-spring';
-import { PlayButton, Timer} from 'react-soundplayer/components';
 
-const Contact = () => {
-    const props = useSpring({
+const Contact = (props) => {
+    const springProps = useSpring({
         from: {
             opacity: 0,
-            transform: 'translate3d(-100%,0,0)'
+            transform: 'translate3d(-1000px,0,0)'
         },
         to: {
-            opacity: 1,
-            transform: 'translate3d(0,0,0)'
-        }
+            opacity: props.contactview ? 1 : 0,
+            transform: props.contactview ? 'translate3d(0,0,0)' : 'translate3d(-1000px,0,0)'
+        },
+        delay: 100
     });
     return(
         <>
-            <animated.div id="section-three-wrapper" style={props} className="row">
+            <animated.div id="section-three-wrapper" style={springProps} className="row">
                 <div className="col align-self-center d-flex justify-content-center">
                     <Form>
                         <Form.Group>
