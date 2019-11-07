@@ -39,7 +39,7 @@ const NavBar = () => {
                                 duration= {500}
                                 onClick={()=>{if(width < 998){setOpen(!open)}}}
                             >
-                                Store
+                                Featured
                             </Link>
                         </div>
                         <Link

@@ -2,6 +2,8 @@ import React from 'react';
 import '../css/bootstrap.min.css'
 import logo from '../logo.png'
 import '../css/main.css'
+import { Button } from 'react-bootstrap'
+import {Link} from 'react-scroll'
 import {useSpring, animated} from 'react-spring';
 
 
@@ -24,6 +26,23 @@ const Main = (props) => {
                 <div className='row'>
                     <div className="col align-self-center d-flex justify-content-center">
                         <img src={logo} alt="MengeBeats Logo"/>
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className="col align-self-center d-flex justify-content-center">
+                        <Button variant="dark" >
+                            <Link
+                                className="nav-link"
+                                style={{pointerEvents: 'visibleFill'}}
+                                to="section-two-wrapper"
+                                spy={true}
+                                smooth={true}
+                                offset={-200}
+                                duration= {500}
+                            >
+                                Down
+                            </Link>
+                        </Button>
                     </div>
                 </div>
             </animated.div>

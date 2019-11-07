@@ -4,5 +4,5 @@
 .logo{
     cursor: default;
 }
-*::selection { background: transparent; }
-*::-moz-selection { background: transparent;}
+::selection { background: transparent; }
+::-moz-selection { background: transparent;}

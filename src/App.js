@@ -19,20 +19,20 @@ function App() {
         threshold: .7,
     });
     const [contactref, contactView] = useInView({
-        threshold: .3,
+        threshold: .4,
     });
     return(
         <div>
             <NavBar/>
             <main>
                 <div className='container-fluid'>
-                    <section ref={mainref} id="first" style={{height: height/1.5, width: width}}>
+                    <section ref={mainref} id="first" style={{height: height/1.3, width: width}}>
                         <Main name="main" mainview={mainView}/>
                     </section>
                     <section ref={storeref} id="second" style={{height: height, width: width}}>
                         <Store name="store" storeview={storeView}/>
                     </section >
-                    <section ref={contactref} id="third" style={{height: height, width: width}}>
+                    <section ref={contactref} id="third" style={{height: height/1.3, width: width}}>
                         <Contact name="contact" contactview={contactView}/>
                     </section>
                 </div>
