@@ -2,51 +2,70 @@ import React from 'react';
 import '../css/bootstrap.min.css'
 import logo from '../logo.png'
 import '../css/main.css'
-import { Button } from 'react-bootstrap'
-import {Link} from 'react-scroll'
 import {useSpring, animated} from 'react-spring';
+import Featured from "./Featured";
+import { Button } from 'react-bootstrap'
+import useWindowDimensions from "../useWindowDimensions";
+import { Link, animateScroll as scroll } from "react-scroll";
 
 
 const Main = (props) => {
+    const { height } = useWindowDimensions();
     const springProps = useSpring({
         from: {
             opacity: 0,
             transform: 'translate3d(0,-500px,0)'
         },
         to: {
-            opacity: props.mainview ? 1 : 0,
-            transform: props.mainview ? 'translate3d(0,0,0)' : 'translate3d(0,-500px,0)'
+            opacity: 1,
+            transform: 'translate3d(0,0,0)'
         },
-        delay: 100
+        delay: 100,
     });
-    return(
+    const buttonProps = useSpring({
+        from: {
+            opacity: 0,
+            transform: 'translate3d(0,1000px,0)'
+        },
+        to: {
+            opacity: 1,
+            transform: 'translate3d(0,0,0)'
+        },
+        delay: 100,
+    });
 
-        <div id="section-one-wrapper" className="container-fluid">
-            <animated.div style={springProps} className='container'>
-                <div className='row'>
-                    <div className="col align-self-center d-flex justify-content-center">
-                        <img src={logo} alt="MengeBeats Logo"/>
+    return(
+        <>
+            <div className="container-fluid">
+                <div className="container" style={{height: height}}>
+                    <div className='row justify-content-center'>
+                        <div className="col-8 align-content-center">
+                            <animated.div style={springProps} className="text-center">
+                                <img src={logo} className="img-fluid" alt="MengeBeats Logo"/>
+                            </animated.div>
+                        </div>
+                    </div>
+                    <div className='row justify-content-center'>
+                        <div className="col-8 justify-content-center">
+                            <animated.div style={buttonProps} className="text-center">
+                                <Button variant="dark">
+                                    <Link
+                                    to="featured"
+                                    smooth={true}
+                                    duration={500}
+                                    >
+                                        Featured
+                                    </Link>
+                                </Button>
+                            </animated.div>
+                        </div>
                     </div>
                 </div>
-                <div className='row'>
-                    <div className="col align-self-center d-flex justify-content-center">
-                        <Button variant="dark" >
-                            <Link
-                                className="nav-link"
-                                style={{pointerEvents: 'visibleFill'}}
-                                to="section-two-wrapper"
-                                spy={true}
-                                smooth={true}
-                                offset={-200}
-                                duration= {500}
-                            >
-                                Down
-                            </Link>
-                        </Button>
-                    </div>
+                <div id="featured">
+                    <Featured />
                 </div>
-            </animated.div>
-        </div>
+            </div>
+        </>
     );
 };
 

@@ -1,9 +1,7 @@
 body {
-  background: #304352;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #d7d2cc, #304352);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #d7d2cc, #304352); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
+  background: #E6DADA;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #274046, #E6DADA);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #274046, #E6DADA); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -11,7 +9,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 *::-webkit-scrollbar {display:none !important;}
-
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
