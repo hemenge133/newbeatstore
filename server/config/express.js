@@ -79,7 +79,6 @@ exports.init = () => {
         }
     ]);
 
-
     app.use(morgan('dev'));
 
     app.use(bodyParser.json());
@@ -89,10 +88,8 @@ exports.init = () => {
     app.use(express.static(path.join(__dirname, '../../build')));
 
     app.post('/upload', upload, (req,res) => {
-
-        Beats.create(req,res,() => {
-            
-            console.log('done');
+        Beats.create(req,res,(req,res) => {
+            res.redirect('/console');
         });
     });
 

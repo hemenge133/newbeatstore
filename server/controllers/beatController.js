@@ -30,23 +30,19 @@ exports.create = (req, res, next) => {
     }
 
     beat.title = req.body.fileTitle;
-    beat.price = req.body.filePrice;
-
-    
+    beat.price = req.body.filePrice;  
 
     beat.markModified();
-    console.log('before save');
-    console.log(beat);
+
     beat.save((err,beat) => {
-        console.log('in save');
         if(err) {
             console.log(err);
             res.status(400);
         }
         console.log("Uploaded to DB: ", beat);
-
+        next(req,res);
     });
-    next();
+    
 };
 
 /* Update a listing - note the order in which this function is called by the router*/

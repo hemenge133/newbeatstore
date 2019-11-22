@@ -1,5 +1,11 @@
 let mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    config = require('../config/config');
+
+const connection = mongoose.createConnection(config.db.uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 let beatSchema = new Schema({
     title:   String,
@@ -22,6 +28,6 @@ beatSchema.pre('save', (next) => {
 
     next();
 });
-
-module.exports = mongoose.model('Beat', beatSchema);
+const beatModel = connection.model('Beat', beatSchema);
+module.exports = beatModel;
 

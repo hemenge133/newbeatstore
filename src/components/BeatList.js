@@ -1,9 +1,22 @@
 import React from 'react';
 import '../css/bootstrap.min.css'
-
-let arr = ["Hello", "Fuck", "AyeLmao", "blah", "Hello", "Fuck", "AyeLmao", "blah", "asd"];
-
 const play = require('../play-button.svg');
+
+const connection = mongoose.createConnection(config.db.uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+const arr = connection.find({},(err,data) => {
+    if(err){
+        console.log(err);
+        throw err;
+    }
+    return data.toArray();
+});
+
+console.log(arr);
+
+
 
 const BeatList = (props) => {
 
