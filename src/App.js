@@ -11,6 +11,7 @@ import './useWindowDimensions'
 import useWindowDimensions from "./useWindowDimensions";
 import { useInView } from 'react-intersection-observer';
 import './css/bootstrap.min.css'
+import Console from './components/Console'
 
 function App() {
     const {height, width} = useWindowDimensions();
@@ -31,10 +32,10 @@ function App() {
                 <Route exact path='/beats' component={Beats} />
                 <Route exact path='/contact' component={Contact} />
                 <Route exact path='/home' component={Main} />
+                <Route exact path='/console' component={Console} />
                 <Route exact path='/' >
                     <Redirect to="/home"/>
                 </Route>
-                <Route component={NotFound}/>
             </Switch>
         </main>
     </>
