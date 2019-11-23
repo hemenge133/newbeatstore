@@ -20,7 +20,7 @@ const Console = (props) => {
                     <div className="custom-file mb-3">
                         <input type='file' name='fileM' id='fileMp3'>
                         </input>
-                        <label htmlFor='fileArt' className='custom-file-label'>Choose MP3</label>
+                        <label htmlFor='fileMp3' className='custom-file-label'>Choose MP3</label>
                     </div>
                     <div className="custom-file mb-3">
                         <input type='file' name='fileS' id='fileStems'>

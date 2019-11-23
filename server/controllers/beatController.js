@@ -56,12 +56,15 @@ exports.delete = (req, res) => {
     res.status(200).json(beat);
 };
 
-exports.list = (req, res) => {
-    Beat.find({},'title',(err, data) => {
+exports.list = (req, res, next) => {
+    Beat.find({},(err, data) => {
         if(err) console.log(err);
-        res.json(data);
+
+        next(req,res,data);
     });
 };
+
+
 
 exports.listingByID = (req, res, next, id) => {
     Beat.findById(id).exec((err, listing) => {
