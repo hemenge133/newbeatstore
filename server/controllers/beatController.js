@@ -59,7 +59,6 @@ exports.delete = (req, res) => {
 exports.list = (req, res, next) => {
     Beat.find({},(err, data) => {
         if(err) console.log(err);
-
         next(req,res,data);
     });
 };

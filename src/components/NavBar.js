@@ -11,7 +11,7 @@ const NavBar = () => {
 
     return(
         <div className="fixed-top" style={{width: width }}>
-            <Navbar  bg="dark" variant='dark' expand="lg">
+            <Navbar  bg="light" variant='light' expand="lg">
                 <Navbar.Brand className="logo">MengeBeats</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={()=>{if(width < 998){setOpen(!open)}}}/>
                 <Navbar.Collapse id="basic-navbar-nav" in={open}>

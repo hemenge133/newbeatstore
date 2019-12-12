@@ -9,7 +9,10 @@ let path = require('path'),
     GridFsStorage = require('multer-gridfs-storage'),
     Grid = require('gridfs-stream'),
     methodOverride = require('method-override'),
-    Beats = require('../controllers/beatController');
+    Beats = require('../controllers/beatController'),
+    Beat = require('../models/beat.server.model'),
+    // stripe = require("stripe")("sk_test_7a0xYCromHnLMkac11RMYBqe00NxIBLe0t"),
+    Striper = require('./striper.js');
 
 exports.init = () => {
     const connection = mongoose.createConnection(config.db.uri, {
@@ -28,9 +31,7 @@ exports.init = () => {
         console.log('Connected to db');
     });
 
-    connection.on('disconnected', () => {
-        console.log("db disconnected");
-    });
+    connection.on('error', console.error.bind(console, 'connection error'));
 
     const storage = new GridFsStorage({
         url: config.db.uri,
@@ -62,13 +63,10 @@ exports.init = () => {
     });
     const maxSize = 1000000*500; //500mb
     const upload = multer(
-        {
-        storage,
-        limits:
+        { storage, limits:
             {
             fileSize: maxSize
-            }})
-            .fields([
+            }}).fields([
             {
                 name: 'fileA',
                 maxCount: 1
@@ -89,11 +87,25 @@ exports.init = () => {
 
     app.use(morgan('dev'));
 
+    //Enable CORS for all requests
+    app.use((_, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*')
+        res.header(
+            'Access-Control-Allow-Headers',
+            'Origin, X-Requested-With, Content-Type, Accept'
+        );
+        next()
+    });
+
     app.use(bodyParser.json());
 
     app.use(methodOverride('_method'));
 
     app.use(express.static(path.join(__dirname, '../../build')));
+
+    app.post('/charge', (req,res) => {
+        Striper(req,res);
+    });
 
     app.post('/upload', upload, (req,res) => {
         console.log("Creating Beat doc");
@@ -115,7 +127,19 @@ exports.init = () => {
                     err: 'No File Exists'
                 })
             }
-            return res.json(file);
+            const readStream = gfs.createReadStream(file.filename);
+            readStream.pipe(res);
+        })
+    });
+
+    app.get('/beats/:id', (req,res) => {
+        Beat.findById(req.params.id,(err, file) => {
+            if(!file || file.length === 0) {
+                return res.status(404).json({
+                    err: 'No Song Exists'
+                })
+            }
+            return res.send(file._doc);
         })
     });
 
@@ -150,13 +174,13 @@ exports.init = () => {
             }
             else{
                 res.status(404).json({
-                    err: "Not an sound"
+                    err: "Not a sound"
                 })
             }
         })
     });
 
-    app.get('*', (req,res) => {
+    app.get('/*', (req,res) => {
         res.sendFile(path.join(__dirname + '../../../build/index.html'));
     });
 
