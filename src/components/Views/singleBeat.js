@@ -11,8 +11,6 @@ class SingleBeat extends React.Component {
         this.state = {
             file: undefined
         }
-
-
     }
     componentWillMount(){
         axios.get(`/beats/${this.props.hook.id}`)

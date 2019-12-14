@@ -1,3 +1,48 @@
+@media (max-width: 34em) {
+    #audio{
+        zoom: 0.5;
+        -moz-transform: scale(0.5);
+        width: 400px;
+    }
+    body{
+        font-size: x-small !important;
+    }
+}
+
+@media (min-width: 34em) {
+    #audio{
+        zoom: 0.75;
+        -moz-transform: scale(0.75);
+        width: 400px;
+    }
+}
+
+@media (min-width: 48em) {
+    #audio{
+        zoom: 0.75;
+        -moz-transform: scale(0.75);
+        width: 500px;
+    }
+}
+
+@media (min-width: 62em) {
+    #audio{
+        zoom: 1;
+        -moz-transform: scale(1);
+        width: 500px;
+    }
+}
+
+@media (min-width: 75em) {
+    #audio{
+        zoom: 1;
+        -moz-transform: scale(1);
+        width: 700px;
+    }
+
+}
+
+
 img{
     width: 100%;
     height: auto;
@@ -5,4 +50,13 @@ img{
 
 audio {
     max-width: 100% !important;
+}
+
+a{
+    color: black;
+}
+
+#player{
+    box-shadow: none !important;
+    background-color: transparent !important;
 }

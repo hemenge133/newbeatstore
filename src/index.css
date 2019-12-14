@@ -1,3 +1,7 @@
+*{
+
+}
+
 body {
   background: #E6DADA;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to left, #274046, #E6DADA);  /* Chrome 10-25, Safari 5.1-6 */
@@ -7,6 +11,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: 60px;
 }
 *::-webkit-scrollbar {display:none !important;}
 

@@ -2,7 +2,6 @@ let path = require('path'),
     express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
-    config = require('./config'),
     morgan = require('morgan'),
     crypto = require('crypto'),
     multer = require('multer'),
@@ -11,14 +10,33 @@ let path = require('path'),
     methodOverride = require('method-override'),
     Beats = require('../controllers/beatController'),
     Beat = require('../models/beat.server.model'),
-    // stripe = require("stripe")("sk_test_7a0xYCromHnLMkac11RMYBqe00NxIBLe0t"),
-    Striper = require('./striper.js');
+    Striper = require('./striper.js'),
+    dotenv = require('dotenv'),
+    auth = require('../controllers/authController.js'),
+    bcrypt = require('bcrypt'),
+    User = require('../models/userModel'),
+    jwt = require('jsonwebtoken');
+
+const { getAudioDurationInSeconds } = require('get-audio-duration');
+
+
 
 exports.init = () => {
-    const connection = mongoose.createConnection(config.db.uri, {
+    dotenv.config({path: path.resolve(__dirname, './.env')});
+
+    const connection = mongoose.createConnection(process.env.MONGO_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
+
+    // const metaConnection = mongoose.createConnection(process.env.MONGO_URI, {
+    //     useNewUrlParser: true,
+    //     useUnifiedTopology: true
+    // });
+    //
+    // metaConnection.once('open',() => {
+    //
+    // });
 
     let app = express();
 
@@ -34,7 +52,7 @@ exports.init = () => {
     connection.on('error', console.error.bind(console, 'connection error'));
 
     const storage = new GridFsStorage({
-        url: config.db.uri,
+        url: process.env.MONGO_URI,
         file: (req, file) => {
             return new Promise((resolve, reject) => {
                 crypto.randomBytes(16, (err, buf) => {
@@ -107,6 +125,74 @@ exports.init = () => {
         Striper(req,res);
     });
 
+    app.post('/validate', async (req,res) => {
+        const { email, password } = req.body;
+
+        const user = User.findOne({email},(err, user) => {
+            let result = {};
+            let status = 200;
+            if(!err) {
+                if (!err && user) {
+                    // We could compare passwords in our model instead of below
+                    bcrypt.compare(password, user.password).then(match => {
+                        if (match) {
+                            result.status = status;
+                            result.result = user;
+                            console.log("Authentication Successful");
+                        } else {
+                            status = 401;
+                            result.status = status;
+                            result.error = 'Authentication error';
+                        }
+                        res.status(status).send(result);
+                    }).catch(err => {
+                        status = 500;
+                        result.status = status;
+                        result.error = err;
+                        res.status(status).send(result);
+                    });
+                } else {
+                    status = 404;
+                    result.status = status;
+                    result.error = err;
+                    res.status(status).send(result);
+                }
+            } else {
+                status = 500;
+                result.status = status;
+                result.error = err;
+                res.status(status).send(result);
+            }
+
+        });
+    });
+
+    app.get('/creds', auth, async (req,res) => {
+        const user = await User.findById(req.user._id).select("-password");
+        res.send(user);
+    });
+
+    app.post('/newUser', async (req,res) => {
+        const { error } = User.validate(req.body);
+        if (error) return res.status(400).send(error.details[0].message);
+
+        let temp = await User.findOne({ email: req.body.email });
+        if (temp) return res.status(400).send("User already registered.");
+
+        temp = new User({
+            password: req.body.password,
+            email: req.body.email
+        });
+        temp.password = await bcrypt.hash(temp.password, 10);
+        await temp.save();
+
+        const token = temp.generateAuthToken();
+        res.header("x-auth-token", token).send({
+            _id: temp._id,
+            email: temp.email
+        });
+    })
+
     app.post('/upload', upload, (req,res) => {
         console.log("Creating Beat doc");
         Beats.create(req,res,(_req,res) => {
@@ -161,10 +247,14 @@ exports.init = () => {
             }
         })
     });
+    app.get('/sounds/meta/:filename', (req,res) => {
+
+    });
+
     app.get('/sounds/:filename', (req,res) => {
-        gfs.files.findOne({filename: req.params.filename},(err, file) => {
+        gfs.files.findOne({filename: req.params.filename}, (err, file) => {
             if(!file || file.length === 0) {
-                return res.status(404).json({
+                res.status(404).json({
                     err: 'No File Exists'
                 })
             }
@@ -174,7 +264,7 @@ exports.init = () => {
             }
             else{
                 res.status(404).json({
-                    err: "Not a sound"
+                    err: 'Error Getting Sound'
                 })
             }
         })

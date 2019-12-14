@@ -29,15 +29,13 @@ class Beats extends React.Component{
         return(
             <div className="container-fluid h-100">
                 <div className="row h-100">
-                    <div className="col-1 col-sm-1 col-m-3" />
-                    <div className="col h-100">
+                    <div className="col-12 col-md-10 col-lg-8 mx-auto h-100">
                         <div className="jumbotron bg-light " style={{marginTop: '5rem',marginBottom: '5rem', overFlow: 'scroll'}}>
                             <div className="mh-25">
                                 <BeatList songs={this.state.songList}/>
                             </div>
                         </div>
                     </div>
-                    <div className="col-1 col-sm-1 col-m-3" />
                 </div>
             </div>
         );

@@ -1,16 +1,18 @@
-const stripe = require('stripe')('sk_test_7a0xYCromHnLMkac11RMYBqe00NxIBLe0t');
+const path = require('path');
+const dotenv = require('dotenv').config({path: path.resolve(__dirname,'./.env')});
+const stripe = require('stripe')(process.env.STRIPE_SK);
 
 const Striper = async (req, res) => {
     try {
         const token = req.body.token.token.id;
-        console.log(req.body.token.token.id);
+        const amt = req.body.amount * 100;
         const charge = await stripe.charges.create({
-            amount: 2000,
+            amount: amt,
             currency: 'usd',
             source: token,
         });
 
-        if (!charge) throw new Error('charge unsuccessful')
+        if (!charge) throw new Error('charge unsuccessful');
 
         res.status(200).send({
             message: 'charge posted successfully',

@@ -40,10 +40,8 @@ const Main = (props) => {
                 <div className='row justify-content-center'>
                     <div className="col-8 align-content-center">
                         <animated.div style={springProps} className="text-center">
-                            {/*<img src={logo} style={{height: `${height/3}`, width: 'auto'}} className="img-fluid" alt="MengeBeats Logo"/>*/}
-                            
+                            <img src={logo} style={{height: `${height/4}`, width: 'auto'}} className="img-fluid" alt="MengeBeats Logo"/>
                         </animated.div>
-                        
                     </div>
                 </div>
                 {/* <div className='row justify-content-center'>

@@ -1,8 +1,11 @@
 let mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    config = require('../config/config');
+    path = require('path'),
+    dotenv = require('dotenv');
 
-const connection = mongoose.createConnection(config.db.uri, {
+dotenv.config({path: path.resolve(__dirname, '../config/.env')});
+
+const connection = mongoose.createConnection(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
